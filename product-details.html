@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css" rel="stylesheet" />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#0a0a0a',
+              secondary: '#111111',
+              accent: '#22c55e',
+              'accent-dark': '#16a34a',
+              'accent-light': '#86efac',
+              muted: '#71717a',
+              'card-dark': '#18181b',
+            },
+            animation: {
+              'spin-slow': 'spin 20s linear infinite',
+              'float': 'float 6s ease-in-out infinite',
+              'glow': 'glow 2s ease-in-out infinite',
+              'slide-up': 'slideUp 0.5s ease-out',
+              'fade-in': 'fadeIn 1s ease-out',
+              'pulse-glow': 'pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'gradient': 'gradient 15s ease infinite',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-20px)' },
+              },
+              glow: {
+                '0%, 100%': { opacity: 1 },
+                '50%': { opacity: 0.5 },
+              },
+              slideUp: {
+                '0%': { transform: 'translateY(100px)', opacity: 0 },
+                '100%': { transform: 'translateY(0)', opacity: 1 },
+              },
+              fadeIn: {
+                '0%': { opacity: 0 },
+                '100%': { opacity: 1 },
+              },
+              pulseGlow: {
+                '0%, 100%': { boxShadow: '0 0 20px rgba(34, 197, 94, 0.5)' },
+                '50%': { boxShadow: '0 0 40px rgba(34, 197, 94, 0.8)' },
+              },
+              gradient: {
+                '0%, 100%': { backgroundPosition: '0% 50%' },
+                '50%': { backgroundPosition: '100% 50%' },
+              }
+            },
+            backgroundImage: {
+              'gradient-radial': 'radial-gradient(ellipse at center, var(--tw-gradient-stops))',
+              'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+            },
+          }
+        }
+      }
+      document.getElementsByTagName("html")[0].className += " js";
+    </script>
+
+    <!-- Custom Styles -->
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+      body {
+        font-family: 'Space Grotesk', sans-serif;
+        background: #0a0a0a;
+      }
+
+      /* Animated gradient background */
+      .gradient-bg {
+        background: linear-gradient(-45deg, #0a0a0a, #111111, #0b1220, #0a0a0a);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+      }
+
+      /* Glassmorphism effect */
+      .glass {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      /* Text gradient */
+      .text-gradient {
+        background: linear-gradient(135deg, #22c55e 0%, #86efac 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Hover lift effect */
+      .hover-lift {
+        transition: all 0.3s ease;
+      }
+
+      .hover-lift:hover {
+        transform: translateY(-5px);
+      }
+
+      .video-container {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      }
+      
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+      }
+      
+      /* Hide webkit scrollbar completely */
+      ::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+      }
+      
+      ::-webkit-scrollbar-thumb {
+        background: transparent;
+      }
+      
+      /* Hide scrollbar for Firefox */
+      html {
+        scrollbar-width: none;
+      }
+      
+      /* Hide scrollbar for IE and Edge */
+      body {
+        -ms-overflow-style: none;
+      }
+    </style>
+
+    <!-- Keep Swiper CSS for showcase/gallery -->
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <!-- Enhanced Favicon Configuration -->
+    <link rel="icon" type="image/svg+xml" href="assets/Foods.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/Foods.svg">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/Foods.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/Foods.svg">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="msapplication-TileColor" content="#22c55e">
+    <meta name="msapplication-TileImage" href="assets/Foods.svg">
+    <meta name="theme-color" content="#22c55e">
+
+    <!-- Keep FontAwesome for footer/social icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <title id="page-title">Food Product Details | BOCK</title>
+</head>
+<body class="gradient-bg text-white overflow-x-hidden relative">
+
+  <!-- Enhanced Navigation (Responsive) -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-primary/80 backdrop-blur-xl border-b border-green-600/20">
+    <div class="max-w-7xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo and Title -->
+        <div class="flex items-center gap-3">
+          <div class="relative flex-shrink-0">
+            <img src="assets/Foods.svg" alt="Bock Foods" class="w-10 h-10 filter drop-shadow-lg">
+            <div class="absolute -inset-1 bg-gradient-to-r from-green-600 to-green-400 rounded-full opacity-30 blur-sm">
+            </div>
+          </div>
+          <span class="text-xl font-bold text-white whitespace-nowrap">Bock Foods</span>
+        </div>
+        <!-- Hamburger for mobile -->
+        <button id="nav-toggle"
+          class="lg:hidden block text-white focus:outline-none p-2 rounded-md hover:bg-green-600/20 transition"
+          aria-label="Open menu">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+        <!-- Desktop Nav -->
+        <div id="nav-menu" class="hidden lg:flex flex-row items-center gap-6">
+          <a href="index.html"
+            class="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium px-2 py-1 rounded">Home</a>
+          <a href="index.html#products"
+            class="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium px-2 py-1 rounded">Products</a>
+          <a href="index.html#work"
+            class="text-gray-300 hover:text-white transition-colors duration-200 text-sm font-medium px-2 py-1 rounded">Work at Bock</a>
+          <a href="https://bockbharath.com/"
+            class="bg-gradient-to-r from-green-600 to-green-500 px-4 py-2 rounded-lg text-white text-sm font-medium hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300">Back
+            to Bock</a>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile Nav Overlay -->
+    <div id="nav-backdrop" class="fixed inset-0 bg-black/40 z-40 hidden transition-opacity duration-300"></div>
+    <div id="nav-mobile-menu"
+      class="fixed top-0 left-0 right-0 z-50 bg-primary/95 backdrop-blur-xl border-b border-green-600/20 shadow-lg px-6 py-6 flex flex-col gap-4 items-center w-full transition-transform duration-300 -translate-y-full lg:hidden">
+      <a href="index.html"
+        class="block w-full text-center text-gray-300 hover:text-white transition-colors duration-200 text-base font-medium py-3">Home</a>
+      <div class="border-t border-green-600/20 w-full"></div>
+      <a href="index.html#products"
+        class="block w-full text-center text-gray-300 hover:text-white transition-colors duration-200 text-base font-medium py-3">Products</a>
+      <div class="border-t border-green-600/20 w-full"></div>
+      <a href="index.html#work"
+        class="block w-full text-center text-gray-300 hover:text-white transition-colors duration-200 text-base font-medium py-3">Work at Bock</a>
+      <div class="border-t border-green-600/20 w-full"></div>
+      <a href="https://bockbharath.com/"
+        class="block w-full text-center bg-gradient-to-r from-green-600 to-green-500 px-4 py-3 rounded-lg text-white text-base font-medium hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300">Back
+        to Bock</a>
+    </div>
+  </nav>
+
+    <!-- Main Content -->
+    <main class="pt-16">
+        <!-- Hero Section -->
+        <section class="relative py-20 lg:py-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-accent/20 border border-accent/30 mb-6">
+                        <i id="product-icon" class="text-3xl text-accent"></i>
+                    </div>
+                    <h1 id="product-title" class="text-4xl lg:text-6xl font-bold mb-6 text-gradient">
+                        Product Details
+                    </h1>
+                    <p id="product-description" class="text-xl text-gray-300 max-w-3xl mx-auto">
+                        Loading product information...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Content Sections -->
+        <section class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div id="product-content" class="space-y-16">
+                    <!-- Content will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Back to Products -->
+        <section class="py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <a href="index.html#products" class="inline-flex items-center px-6 py-3 bg-accent hover:bg-accent-dark text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105">
+                    <i class="ri-arrow-left-line mr-2"></i>
+                    Back to Products
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative mt-20 bg-gradient-to-b from-primary via-black to-primary text-white">
+      <div class="h-px bg-gradient-to-r from-transparent via-accent to-transparent"></div>
+      <div class="relative">
+        <div class="absolute inset-0 bg-[linear-gradient(135deg,#000000,30%,#0a0a0a,70%,#140000)] opacity-50"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+            <div class="space-y-6">
+              <div>
+                <h2 class="text-2xl font-bold text-accent mb-2">BOCK</h2>
+                <p class="text-gray-400 text-sm leading-relaxed">Innovating across multiple industries with cutting-edge
+                  technology and sustainable solutions for a better tomorrow.</p>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold text-white mb-4">Company</h3>
+                <nav class="space-y-3">
+                  <a href="https://bockbharath.com/aboutus.html"
+                    class="block text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition-colors duration-200 text-sm">About
+                    Us</a>
+                  <a href="https://bockbharath.com/sop.html"
+                    class="block text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition-colors duration-200 text-sm">Employees
+                    & SOPs</a>
+                  <a href="https://bockbharath.com/progress.html"
+                    class="block text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition-colors duration-200 text-sm">Progress</a>
+                </nav>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-white mb-6">Products</h3>
+              <div class="grid grid-cols-2 gap-x-8 gap-y-3 text-sm">
+                <a href="product-details.html?product=smart-agriculture"
+                  class="text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition-colors duration-200">Smart Agriculture</a>
+                <a href="product-details.html?product=food-safety"
+                  class="text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition-colors duration-200">Food Safety</a>
+                <a href="product-details.html?product=nutrition-analytics"
+                  class="text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition-colors duration-200">Nutrition Analytics</a>
+                <a href="product-details.html?product=sustainable-packaging"
+                  class="text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition-colors duration-200">Sustainable Packaging</a>
+                <a href="product-details.html?product=vertical-farming"
+                  class="text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition-colors duration-200">Vertical Farming</a>
+                <a href="product-details.html?product=supply-chain"
+                  class="text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition-colors duration-200">Supply Chain</a>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-white mb-6">Businesses</h3>
+              <nav class="space-y-3 text-sm">
+                <a href="#businesses"
+                  class="flex items-center gap-3 text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition group">
+                  <div class="w-2 h-2 bg-orange-500 rounded-full opacity-60 group-hover:opacity-100"></div>
+                  Bock Automotive
+                </a>
+                <a href="#businesses"
+                  class="flex items-center gap-3 text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition group">
+                  <div class="w-2 h-2 bg-green-500 rounded-full opacity-60 group-hover:opacity-100"></div>
+                  Bock Foods
+                </a>
+                <a href="#businesses"
+                  class="flex items-center gap-3 text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition group">
+                  <div class="w-2 h-2 bg-purple-500 rounded-full opacity-60 group-hover:opacity-100"></div>
+                  Bock Space
+                </a>
+                <a href="#businesses"
+                  class="flex items-center gap-3 text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition group">
+                  <div class="w-2 h-2 bg-blue-500 rounded-full opacity-60 group-hover:opacity-100"></div>
+                  Bock AI
+                </a>
+                <a href="#businesses"
+                  class="flex items-center gap-3 text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition group">
+                  <div class="w-2 h-2 bg-teal-500 rounded-full opacity-60 group-hover:opacity-100"></div>
+                  Bock Health
+                </a>
+                <a href="#businesses"
+                  class="flex items-center gap-3 text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition group">
+                  <div class="w-2 h-2 bg-indigo-500 rounded-full opacity-60 group-hover:opacity-100"></div>
+                  Bock Chain
+                </a>
+                <a href="#businesses"
+                  class="flex items-center gap-3 text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition group">
+                  <div class="w-2 h-2 bg-indigo-500 rounded-full opacity-60 group-hover:opacity-100"></div>
+                  Bock Institute
+                </a>
+                <a href="#businesses"
+                  class="flex items-center gap-3 text-gray-400 hover:underline underline-offset-4 decoration-green-600 decoration-2 transition group">
+                  <div class="w-2 h-2 bg-indigo-500 rounded-full opacity-60 group-hover:opacity-100"></div>
+                  Bock Force
+                </a>
+              </nav>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-white mb-6">Contact Us</h3>
+              <div class="space-y-4 mb-6 text-sm">
+                <div class="flex items-center gap-3">
+                  <i class="ri-mail-line text-green-400 text-lg"></i>
+                  <a href="mailto:info@bockbharath.com"
+                    class="text-gray-400 hover:text-white transition">info@bockbharath.com</a>
+                </div>
+                <div class="flex items-center gap-3">
+                  <i class="ri-phone-fill text-green-400 text-lg"></i>
+                  <a href="tel:+916360288456" class="text-gray-400 hover:text-white transition">+91 6360288456</a>
+                </div>
+              </div>
+              <div>
+                <h4 class="text-sm font-medium text-white mb-4">Follow Us</h4>
+                <div class="flex gap-4">
+                  <a href="https://www.facebook.com/bockbharath/"
+                    class="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-lg flex items-center justify-center transition group"><i
+                      class="fab fa-facebook-f text-gray-400 group-hover:text-white text-lg"></i></a>
+                  <a href="https://www.linkedin.com/company/bockbharth/"
+                    class="w-10 h-10 bg-gray-800 hover:bg-blue-700 rounded-lg flex items-center justify-center transition group"><i
+                      class="fab fa-linkedin-in text-gray-400 group-hover:text-white text-lg"></i></a>
+                  <a href="https://x.com/BockBH"
+                    class="w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-lg flex items-center justify-center transition group"><i
+                      class="fab fa-twitter text-gray-400 group-hover:text-white text-lg"></i></a>
+                  <a href="https://www.instagram.com/bockbharath"
+                    class="w-10 h-10 bg-gray-800 hover:bg-gradient-to-r hover:from-purple-500 hover:to-pink-500 rounded-lg flex items-center justify-center transition-all group"><i
+                      class="fab fa-instagram text-gray-400 group-hover:text-white text-lg"></i></a>
+                  <a href="https://www.youtube.com/@bockbharath"
+                    class="w-10 h-10 bg-gray-800 hover:bg-red-600 rounded-lg flex items-center justify-center transition group"><i
+                      class="ri-youtube-fill text-gray-400 group-hover:text-white text-lg"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="border-t border-white/20 pt-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+              <div class="text-center md:text-left">
+                <p class="text-gray-400 text-sm">© 2024–2025 BOCK™. All Rights Reserved.</p>
+                <p class="text-gray-500 text-xs mt-1">Octakaigon Bock Private Limited</p>
+              </div>
+              <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+                class="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition text-sm">
+                <span class="text-gray-400">Back to top</span>
+                <i class="ri-arrow-up-line text-gray-400"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Include Product Data -->
+    <script src="assets/js/foods-product-data.js"></script>
+    
+    <!-- Mobile Navigation Script -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var navToggle = document.getElementById('nav-toggle');
+      var navMenu = document.getElementById('nav-menu');
+      var navMobileMenu = document.getElementById('nav-mobile-menu');
+      var navBackdrop = document.getElementById('nav-backdrop');
+      function openMenu() {
+        navMobileMenu.classList.remove('-translate-y-full');
+        navMobileMenu.classList.add('translate-y-0');
+        navBackdrop.classList.remove('hidden');
+        navBackdrop.classList.add('opacity-100');
+      }
+      function closeMenu() {
+        navMobileMenu.classList.add('-translate-y-full');
+        navMobileMenu.classList.remove('translate-y-0');
+        navBackdrop.classList.add('hidden');
+        navBackdrop.classList.remove('opacity-100');
+      }
+      if (navToggle) {
+        navToggle.addEventListener('click', function () {
+          if (navMobileMenu.classList.contains('-translate-y-full')) {
+            openMenu();
+          } else {
+            closeMenu();
+          }
+        });
+      }
+      if (navBackdrop) {
+        navBackdrop.addEventListener('click', closeMenu);
+      }
+    });
+    </script>
+    
+    <!-- Product Details Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get product ID from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('product');
+            
+            if (!productId || !productData[productId]) {
+                // Redirect to home if product not found
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const product = productData[productId];
+            
+            // Update page title and meta
+            document.title = `${product.name} | BOCK Foods`;
+            document.getElementById('page-title').textContent = `${product.name} | BOCK Foods`;
+            
+            // Update content
+            document.getElementById('product-icon').className = `text-3xl text-accent ${(product.metadata && product.metadata.icon) || product.icon}`;
+            document.getElementById('product-title').textContent = (product.metadata && product.metadata.name) || product.name;
+            document.getElementById('product-description').textContent = (product.metadata && product.metadata.description) || product.description;
+            
+            // Generate 4-section content layout
+            const contentContainer = document.getElementById('product-content');
+            contentContainer.innerHTML = '';
+            
+            // Section 1: Content + Image
+            const section1 = document.createElement('div');
+            section1.className = `glass rounded-2xl p-8 hover-lift transition-all duration-300 animate-fade-in`;
+            section1.innerHTML = `
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Overview & Innovation</h3>
+                        <p class="text-gray-300 leading-relaxed mb-6">
+                            ${product.description} ${product.sectionContent && product.sectionContent.overviewDescription || 'Our innovative technology transforms traditional food systems through sustainable practices, advanced analytics, and cutting-edge agricultural solutions.'}
+                        </p>
+                        <div class="space-y-3">
+                            ${product.features && product.features.slice(0, 3).map(feature => `
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 bg-accent rounded-full"></div>
+                                    <span class="text-gray-400 text-sm">${feature.title}</span>
+                                </div>
+                            `).join('') || `
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 bg-accent rounded-full"></div>
+                                    <span class="text-gray-400 text-sm">Sustainable food technology</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 bg-accent rounded-full"></div>
+                                    <span class="text-gray-400 text-sm">Advanced nutrition solutions</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-2 h-2 bg-accent rounded-full"></div>
+                                    <span class="text-gray-400 text-sm">Next-generation agriculture</span>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                    <div class="order-first md:order-last">
+                        <img src="${product.gallery && product.gallery[0] && product.gallery[0].src || 'assets/food_img1.jpg'}" alt="${product.name}" class="w-full h-64 object-cover rounded-xl shadow-lg">
+                    </div>
+                </div>
+            `;
+            contentContainer.appendChild(section1);
+            
+            // Section 2: Content + YouTube Video
+            const section2 = document.createElement('div');
+            section2.className = `glass rounded-2xl p-8 hover-lift transition-all duration-300 animate-fade-in`;
+            section2.style.animationDelay = '0.2s';
+            section2.innerHTML = `
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Technology in Action</h3>
+                        <p class="text-gray-300 leading-relaxed mb-6">
+                            ${product.sectionContent && product.sectionContent.demoDescription || `Experience how our ${product.name} technology revolutionizes food production, processing, and distribution. See the real-world impact of our innovative solutions on global food systems.`}
+                        </p>
+                        <div class="space-y-3 mb-6">
+                            ${product.features && product.features.slice(3, 6).map(feature => `
+                                <div class="flex items-center gap-2 text-sm text-gray-400">
+                                    <i class="ri-check-line text-accent"></i>
+                                    <span>${feature.title}</span>
+                                </div>
+                            `).join('') || `
+                                <div class="flex items-center gap-2 text-sm text-gray-400">
+                                    <i class="ri-check-line text-accent"></i>
+                                    <span>Sustainable farming practices</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-gray-400">
+                                    <i class="ri-check-line text-accent"></i>
+                                    <span>Enhanced food safety protocols</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-sm text-gray-400">
+                                    <i class="ri-check-line text-accent"></i>
+                                    <span>Optimized nutrition delivery</span>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                    <div class="order-first md:order-last">
+                        <div class="video-container">
+                            <iframe src="${product.videos && product.videos.demo || 'https://www.youtube.com/embed/dQw4w9WgXcQ'}" title="${product.name} Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            `;
+            contentContainer.appendChild(section2);
+            
+            // Section 3: Content + Document
+            const section3 = document.createElement('div');
+            section3.className = `glass rounded-2xl p-8 hover-lift transition-all duration-300 animate-fade-in`;
+            section3.style.animationDelay = '0.4s';
+            section3.innerHTML = `
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-4">Research & Documentation</h3>
+                        <p class="text-gray-300 leading-relaxed mb-6">
+                            ${product.sectionContent && product.sectionContent.technicalDocDescription || `Access comprehensive research findings, implementation guides, and technical documentation for ${product.name}. Our detailed resources support seamless adoption and optimal utilization.`}
+                        </p>
+                        <div class="space-y-4">
+                            ${product.documents ? 
+                              `
+                              ${product.documents.whitepaper ? 
+                                `
+                                <div class="flex items-start gap-3">
+                                    <i class="ri-file-text-line text-accent text-xl mt-1"></i>
+                                    <div>
+                                        <h4 class="text-white font-semibold mb-1">Research Papers</h4>
+                                        <p class="text-gray-400 text-sm">Scientific studies and research validating our technology</p>
+                                    </div>
+                                </div>
+                                ` : ''
+                              }
+                              ${product.documents.technicalDoc ? 
+                                `
+                                <div class="flex items-start gap-3">
+                                    <i class="ri-download-line text-accent text-xl mt-1"></i>
+                                    <div>
+                                        <h4 class="text-white font-semibold mb-1">Implementation Guide</h4>
+                                        <p class="text-gray-400 text-sm">Step-by-step deployment and integration procedures</p>
+                                    </div>
+                                </div>
+                                ` : ''
+                              }
+                              ${product.documents.caseStudy ? 
+                                `
+                                <div class="flex items-start gap-3">
+                                    <i class="ri-settings-line text-accent text-xl mt-1"></i>
+                                    <div>
+                                        <h4 class="text-white font-semibold mb-1">Best Practices Manual</h4>
+                                        <p class="text-gray-400 text-sm">Optimization guidelines and operational recommendations</p>
+                                    </div>
+                                </div>
+                                ` : ''
+                              }
+                              ` : 
+                              `
+                              <div class="flex items-start gap-3">
+                                  <i class="ri-file-text-line text-accent text-xl mt-1"></i>
+                                  <div>
+                                      <h4 class="text-white font-semibold mb-1">Research Papers</h4>
+                                      <p class="text-gray-400 text-sm">Scientific studies and research validating our technology</p>
+                                  </div>
+                              </div>
+                              <div class="flex items-start gap-3">
+                                  <i class="ri-download-line text-accent text-xl mt-1"></i>
+                                  <div>
+                                      <h4 class="text-white font-semibold mb-1">Implementation Guide</h4>
+                                      <p class="text-gray-400 text-sm">Step-by-step deployment and integration procedures</p>
+                                  </div>
+                              </div>
+                              <div class="flex items-start gap-3">
+                                  <i class="ri-settings-line text-accent text-xl mt-1"></i>
+                                  <div>
+                                      <h4 class="text-white font-semibold mb-1">Best Practices Manual</h4>
+                                      <p class="text-gray-400 text-sm">Optimization guidelines and operational recommendations</p>
+                                  </div>
+                              </div>
+                              `
+                            }
+                        </div>
+                    </div>
+                    <div class="order-first md:order-last">
+                        <div class="bg-gray-800/50 rounded-xl p-6 border border-accent/20 hover:border-accent/40 transition-colors">
+                            <div class="text-center">
+                                <i class="ri-file-pdf-line text-accent text-4xl mb-4"></i>
+                                <h4 class="text-white font-semibold mb-2">Technical Documentation</h4>
+                                <p class="text-gray-400 text-sm mb-4">Comprehensive guides and research documentation</p>
+                                <a href="${product.documents && product.documents.technicalDoc || '#'}" class="inline-flex items-center px-4 py-2 bg-accent hover:bg-accent-dark text-white font-medium rounded-lg transition-colors">
+                                    <i class="ri-download-line mr-2"></i>
+                                    Download PDF
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            contentContainer.appendChild(section3);
+            
+            // Section 4: Developer Tutorial Video
+            const section4 = document.createElement('div');
+            section4.className = `glass rounded-2xl p-8 hover-lift transition-all duration-300 animate-fade-in`;
+            section4.style.animationDelay = '0.6s';
+            section4.innerHTML = `
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-4">${product.tutorialSection && product.tutorialSection.title || "Developer Walkthrough"}</h3>
+                        <p class="text-gray-300 leading-relaxed mb-6">
+                            ${product.sectionContent && product.sectionContent.developerDescription || `Join our technology experts as they provide a detailed walkthrough of ${product.name}. This tutorial covers implementation details, best practices, and advanced techniques for optimal results.`}
+                        </p>
+                        <div class="space-y-3 mb-6">
+                            ${product.developerBullets ? 
+                              product.developerBullets.map(bullet => `
+                                <div class="flex items-center gap-2 text-sm text-gray-400">
+                                    <i class="${bullet.icon || 'ri-check-line'} text-accent"></i>
+                                    <span>${bullet.text}</span>
+                                </div>
+                              `).join('') : 
+                              `
+                              <div class="flex items-center gap-2 text-sm text-gray-400">
+                                  <i class="ri-code-line text-accent"></i>
+                                  <span>Technical implementation guides</span>
+                              </div>
+                              <div class="flex items-center gap-2 text-sm text-gray-400">
+                                  <i class="ri-tools-line text-accent"></i>
+                                  <span>Configuration best practices</span>
+                              </div>
+                              <div class="flex items-center gap-2 text-sm text-gray-400">
+                                  <i class="ri-lightbulb-line text-accent"></i>
+                                  <span>Expert tips and insights</span>
+                              </div>
+                              `
+                            }
+                        </div>
+                        ${product.tutorialSection && product.tutorialSection.ctaButton ? 
+                          `
+                          <a href="${product.tutorialSection.ctaButton.url || '#'}" class="inline-flex items-center px-6 py-3 bg-accent hover:bg-accent-dark text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105">
+                              <i class="${product.tutorialSection.ctaButton.icon || 'ri-github-fill'} mr-2"></i>
+                              ${product.tutorialSection.ctaButton.text || 'View Code Examples'}
+                          </a>
+                          ` : ''
+                        }
+                    </div>
+                    <div class="order-first md:order-last">
+                        <div class="video-container">
+                            <iframe src="${product.videos && product.videos.tutorial || 'https://www.youtube.com/embed/M1-YeqGynlw'}" title="${product.name} Tutorial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
+            `;
+            contentContainer.appendChild(section4);
+            
+            // Section 5: Advanced Documentation Cards
+            const section5 = document.createElement('div');
+            section5.className = `glass rounded-2xl p-8 hover-lift transition-all duration-300 animate-fade-in`;
+            section5.style.animationDelay = '0.8s';
+            section5.innerHTML = `
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold text-white mb-4">${product.documentSection && product.documentSection.title || "Additional Resources"}</h3>
+                    <p class="text-gray-300 max-w-3xl mx-auto">
+                        ${product.documentSection && product.documentSection.description || `Access detailed documentation, research papers, and case studies to help you maximize the benefits of ${product.name}.`}
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    ${product.documentCards ? 
+                      product.documentCards.map(card => `
+                        <div class="bg-gray-800/50 rounded-xl p-6 border border-accent/20 hover:border-accent/40 transition-colors">
+                            <div class="text-center">
+                                <i class="${card.icon || 'ri-file-paper-2-line'} text-accent text-4xl mb-4"></i>
+                                <h4 class="text-white font-semibold mb-2">${card.title}</h4>
+                                <p class="text-gray-400 text-sm mb-4">${card.description}</p>
+                                <a href="${card.downloadUrl || '#'}" class="inline-flex items-center px-4 py-2 bg-accent hover:bg-accent-dark text-white font-medium rounded-lg transition-colors">
+                                    <i class="ri-download-line mr-2"></i>
+                                    ${card.buttonText || 'Download'}
+                                </a>
+                            </div>
+                        </div>
+                      `).join('') : 
+                      `
+                        <div class="bg-gray-800/50 rounded-xl p-6 border border-accent/20 hover:border-accent/40 transition-colors">
+                            <div class="text-center">
+                                <i class="ri-file-paper-2-line text-accent text-4xl mb-4"></i>
+                                <h4 class="text-white font-semibold mb-2">Whitepaper</h4>
+                                <p class="text-gray-400 text-sm mb-4">${product.sectionContent && product.sectionContent.whitepaperDescription || `Detailed research and technical overview of ${product.name} technology and methodology.`}</p>
+                                <a href="${product.documents && product.documents.whitepaper || '#'}" class="inline-flex items-center px-4 py-2 bg-accent hover:bg-accent-dark text-white font-medium rounded-lg transition-colors">
+                                    <i class="ri-download-line mr-2"></i>
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800/50 rounded-xl p-6 border border-accent/20 hover:border-accent/40 transition-colors">
+                            <div class="text-center">
+                                <i class="ri-file-list-3-line text-accent text-4xl mb-4"></i>
+                                <h4 class="text-white font-semibold mb-2">Case Study</h4>
+                                <p class="text-gray-400 text-sm mb-4">${product.sectionContent && product.sectionContent.caseStudyDescription || `Real-world implementation examples and results achieved with ${product.name}.`}</p>
+                                <a href="${product.documents && product.documents.caseStudy || '#'}" class="inline-flex items-center px-4 py-2 bg-accent hover:bg-accent-dark text-white font-medium rounded-lg transition-colors">
+                                    <i class="ri-download-line mr-2"></i>
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+                        <div class="bg-gray-800/50 rounded-xl p-6 border border-accent/20 hover:border-accent/40 transition-colors">
+                            <div class="text-center">
+                                <i class="ri-book-open-line text-accent text-4xl mb-4"></i>
+                                <h4 class="text-white font-semibold mb-2">Implementation Guide</h4>
+                                <p class="text-gray-400 text-sm mb-4">${product.sectionContent && product.sectionContent.implementationGuideDescription || `Step-by-step guide for deploying and optimizing ${product.name} in your operations.`}</p>
+                                <a href="${product.documents && product.documents.implementationGuide || '#'}" class="inline-flex items-center px-4 py-2 bg-accent hover:bg-accent-dark text-white font-medium rounded-lg transition-colors">
+                                    <i class="ri-download-line mr-2"></i>
+                                    Download
+                                </a>
+                            </div>
+                        </div>
+                      `
+                    }
+                </div>
+            `;
+            contentContainer.appendChild(section5);
+            
+            // Section 6: Key Benefits & Impact
+            const section6 = document.createElement('div');
+            section6.className = `glass rounded-2xl p-8 hover-lift transition-all duration-300 animate-fade-in`;
+            section6.style.animationDelay = '1.0s';
+            section6.innerHTML = `
+                <div class="text-center mb-8">
+                    <h3 class="text-2xl font-bold text-white mb-4">Key Benefits & Impact</h3>
+                    <p class="text-gray-300 max-w-3xl mx-auto">
+                        ${product.sectionContent && product.sectionContent.featuresDescription || `Discover how ${(product.metadata && product.metadata.name) || product.name} delivers measurable benefits across the entire food ecosystem, from production to consumption, creating positive impact for farmers, consumers, and the environment.`}
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    ${product.features ?
+                      product.features.map(feature => `
+                        <div class="bg-primary/50 rounded-xl p-6 border border-accent/20 hover:border-accent/40 transition-colors">
+                            <div class="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
+                                <i class="${feature.icon || 'ri-leaf-line'} text-accent text-xl"></i>
+                            </div>
+                            <h4 class="text-white font-semibold mb-2">${feature.title}</h4>
+                            <p class="text-gray-400 text-sm">${feature.description}</p>
+                        </div>
+                      `).join('') :
+                      `
+                        <div class="bg-primary/50 rounded-xl p-6 border border-accent/20 hover:border-accent/40 transition-colors">
+                            <div class="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
+                                <i class="ri-leaf-line text-accent text-xl"></i>
+                            </div>
+                            <h4 class="text-white font-semibold mb-2">Sustainable Impact</h4>
+                            <p class="text-gray-400 text-sm">Environmentally responsible solutions that reduce waste and promote sustainability</p>
+                        </div>
+                        <div class="bg-primary/50 rounded-xl p-6 border border-accent/20 hover:border-accent/40 transition-colors">
+                            <div class="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
+                                <i class="ri-heart-pulse-line text-accent text-xl"></i>
+                            </div>
+                            <h4 class="text-white font-semibold mb-2">Health & Nutrition</h4>
+                            <p class="text-gray-400 text-sm">Enhanced nutritional value and improved health outcomes for consumers</p>
+                        </div>
+                        <div class="bg-primary/50 rounded-xl p-6 border border-accent/20 hover:border-accent/40 transition-colors">
+                            <div class="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
+                                <i class="ri-speed-line text-accent text-xl"></i>
+                            </div>
+                            <h4 class="text-white font-semibold mb-2">Efficiency Gains</h4>
+                            <p class="text-gray-400 text-sm">Streamlined processes that reduce costs and increase operational efficiency</p>
+                        </div>
+                        <div class="bg-primary/50 rounded-xl p-6 border border-accent/20 hover:border-accent/40 transition-colors">
+                            <div class="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
+                                <i class="ri-shield-check-line text-accent text-xl"></i>
+                            </div>
+                            <h4 class="text-white font-semibold mb-2">Food Safety</h4>
+                            <p class="text-gray-400 text-sm">Advanced safety protocols ensuring the highest quality and safety standards</p>
+                        </div>
+                        <div class="bg-primary/50 rounded-xl p-6 border border-accent/20 hover:border-accent/40 transition-colors">
+                            <div class="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
+                                <i class="ri-smartphone-line text-accent text-xl"></i>
+                            </div>
+                            <h4 class="text-white font-semibold mb-2">Smart Technology</h4>
+                            <p class="text-gray-400 text-sm">IoT integration and smart monitoring for real-time insights and control</p>
+                        </div>
+                        <div class="bg-primary/50 rounded-xl p-6 border border-accent/20 hover:border-accent/40 transition-colors">
+                            <div class="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4">
+                                <i class="ri-global-line text-accent text-xl"></i>
+                            </div>
+                            <h4 class="text-white font-semibold mb-2">Global Reach</h4>
+                            <p class="text-gray-400 text-sm">Scalable solutions addressing global food challenges and security</p>
+                        </div>
+                      `
+                    }
+            `;
+            contentContainer.appendChild(section6);
+        });
+    </script>
+</body>
+</html>
